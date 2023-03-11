@@ -41,6 +41,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
+        draw(g);
     }
 
     public void draw(Graphics g){
@@ -49,16 +50,45 @@ public class GamePanel extends JPanel implements ActionListener {
             g.drawLine(i*UNIT_SIZE,0,i*UNIT_SIZE,SCREEN_HEIGHT);
             g.drawLine(0,i*UNIT_SIZE,SCREEN_WIDTH,i*UNIT_SIZE);
         }
+        //draw Points
+        g.setColor(Color.RED);
+        g.fillOval(pointX,pointY,UNIT_SIZE,UNIT_SIZE);
+
+       
     }
 
+    /**
+     * creating a new Point that the Snake is eating
+     */
     public void newPoint(){
-
+        pointX = random.nextInt((int)(SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
+        pointY = random.nextInt((int)(SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
     }
 
+    /**
+     * moving the Snake
+     */
     public void move(){
-
+        for(int i = bodyParts; i > 0 ; i--){
+            x[i] = x[i-1];
+            y[i] = y[i-1];
+            switch(direction){
+                case 'U':
+                    y[0] = y[0] - UNIT_SIZE;
+                case 'D':
+                    y[0] = y[0] + UNIT_SIZE;
+                case 'L':
+                    x[0] = x[0] - UNIT_SIZE;
+                case 'R':
+                    x[0] = x[0] + UNIT_SIZE;
+                break;
+            }
+        }
     }
 
+    /**
+     * checks how much Points have been eaten
+     */
     public void checkPoints(){
 
     }

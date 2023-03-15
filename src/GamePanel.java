@@ -58,8 +58,6 @@ public class GamePanel extends JPanel implements ActionListener {
             //draw Snake
             for (int i = 0; i < bodyParts; i++) {
                 if (i == 0) {
-                    System.out.println('H' + i);
-                    System.out.println(running);
                     g.setColor(Color.YELLOW);
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 } else {
@@ -96,10 +94,13 @@ public class GamePanel extends JPanel implements ActionListener {
             switch(direction){
                 case 'U':
                     y[0] = y[0] - UNIT_SIZE;
+                    break;
                 case 'D':
                     y[0] = y[0] + UNIT_SIZE;
+                    break;
                 case 'L':
                     x[0] = x[0] - UNIT_SIZE;
+                    break;
                 case 'R':
                     x[0] = x[0] + UNIT_SIZE;
                 break;

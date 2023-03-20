@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
 import java.util.Random;
 
 
@@ -9,7 +8,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     static final int SCREEN_WIDTH = 600;
     static final int SCREEN_HEIGHT = 600;
-    static final int UNIT_SIZE = 18;
+    static final int UNIT_SIZE = 25;
     static final int GAME_UNITS =  (SCREEN_HEIGHT*SCREEN_WIDTH/UNIT_SIZE);
     static final int DELAY = 75; //higher the number, the slower the game
     final int x[] = new int[GAME_UNITS];
@@ -28,7 +27,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
         this.setBackground(Color.black);
         this.setFocusable(true);
-        this.addKeyListener(new MyKeyAdpter());
+        this.addKeyListener(new MyKeyAdapter());
         startGame();
     }
 
@@ -37,6 +36,7 @@ public class GamePanel extends JPanel implements ActionListener {
         running = true;
         timer = new Timer(DELAY,this);
         timer.start();
+        System.out.println("startGame");
     }
 
     public void paintComponent(Graphics g){
@@ -45,8 +45,8 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void draw(Graphics g){
-        //Draw lines inside our Grid
         if(running) {
+            //Draw lines inside our Grid
             for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
                 g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
                 g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
@@ -61,11 +61,11 @@ public class GamePanel extends JPanel implements ActionListener {
                     g.setColor(Color.YELLOW);
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 } else {
-                    System.out.println('B' + i);
-                    g.setColor(Color.ORANGE);
+                    g.setColor(Color.GREEN);
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 }
             }
+            //Scoreboard
             g.setColor(Color.RED);
             g.setFont(new Font("Cambria",Font.BOLD,40));
             FontMetrics metrics = getFontMetrics(g.getFont());
@@ -106,7 +106,6 @@ public class GamePanel extends JPanel implements ActionListener {
                 break;
             }
         }
-
     }
 
     /**
@@ -121,9 +120,6 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void checkCollisions(){
-        //PROBLEM WITH THIS FOR LOOP
-        //GIVES COLLUSION WITH BODY BY MOVING DOWN AND THEN LEFT
-        //if head collides with body
         for(int i = bodyParts; i > 0 ; i--){
             if((x[0] == x[i]) && (y[0] == y[i])){
                 running = false;
@@ -155,6 +151,12 @@ public class GamePanel extends JPanel implements ActionListener {
         g.setFont(new Font("Cambria",Font.BOLD,75));
         FontMetrics metrics = getFontMetrics(g.getFont());
         g.drawString("GAME OVER",(SCREEN_WIDTH - metrics.stringWidth("GAME OVER")) /2, SCREEN_HEIGHT / 2);
+
+        //Score
+        g.setColor(Color.RED);
+        g.setFont(new Font("Cambria",Font.BOLD,40));
+        FontMetrics metrics2 = getFontMetrics(g.getFont());
+        g.drawString("Score: " + pointsEaten,(SCREEN_WIDTH - metrics.stringWidth("Score: " + pointsEaten)) /2, g.getFont().getSize());
     }
 
     @Override
@@ -167,7 +169,7 @@ public class GamePanel extends JPanel implements ActionListener {
         repaint();
     }
 
-    public class MyKeyAdpter extends KeyAdapter{
+    public class MyKeyAdapter extends KeyAdapter{
         @Override
         public void keyPressed(KeyEvent e){
             switch(e.getKeyCode()){
